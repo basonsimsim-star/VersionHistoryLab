@@ -25,7 +25,7 @@ jobs:
       - name: Package unsigned educational IPA
         run: |
           mkdir -p build/Payload
-          cp -R build/VersionHistoryLab.xcarchive/Products/Applications/VersionHistoryLab.app build/Payload/
+          cp -R "build/VersionHistoryLab.xcarchive/Products/Applications/Version History Lab.app" build/Payload/
           cd build
           zip -r VersionHistoryLab-unsigned-demo.ipa Payload
       - uses: actions/upload-artifact@v4
@@ -33,3 +33,4 @@ jobs:
           name: version-history-lab-unsigned-ipa
           path: build/VersionHistoryLab-unsigned-demo.ipa
           if-no-files-found: error
+
