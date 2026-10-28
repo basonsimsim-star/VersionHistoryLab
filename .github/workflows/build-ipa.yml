@@ -5,7 +5,7 @@ on:
 
 jobs:
   build:
-    runs-on: macos-15
+    runs-on: macos-15-intel
     steps:
       - uses: actions/checkout@v4
       - name: Install project generator
@@ -33,4 +33,5 @@ jobs:
           name: version-history-lab-unsigned-ipa
           path: build/VersionHistoryLab-unsigned-demo.ipa
           if-no-files-found: error
+
 
