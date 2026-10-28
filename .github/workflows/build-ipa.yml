@@ -1,0 +1,35 @@
+name: Build educational demo IPA
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: macos-15
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install project generator
+        run: brew install xcodegen
+      - name: Generate Xcode project
+        run: xcodegen generate
+      - name: Build unsigned app archive
+        run: |
+          xcodebuild \
+            -project VersionHistoryLab.xcodeproj \
+            -scheme VersionHistoryLab \
+            -configuration Release \
+            -destination 'generic/platform=iOS' \
+            -archivePath build/VersionHistoryLab.xcarchive \
+            CODE_SIGNING_ALLOWED=NO \
+            archive
+      - name: Package unsigned educational IPA
+        run: |
+          mkdir -p build/Payload
+          cp -R build/VersionHistoryLab.xcarchive/Products/Applications/VersionHistoryLab.app build/Payload/
+          cd build
+          zip -r VersionHistoryLab-unsigned-demo.ipa Payload
+      - uses: actions/upload-artifact@v4
+        with:
+          name: version-history-lab-unsigned-ipa
+          path: build/VersionHistoryLab-unsigned-demo.ipa
+          if-no-files-found: error
